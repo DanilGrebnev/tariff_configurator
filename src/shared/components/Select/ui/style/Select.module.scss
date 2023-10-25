@@ -1,6 +1,7 @@
 $selectWidth: 368px;
 $selectPadding: 16px 18px;
 $fonSizeSelectText: 24px;
+$transitionDropDown: 0.1s;
 
 @mixin select-item-active-effect {
     background: var(--select-item-hover-background-color);
@@ -18,24 +19,28 @@ $fonSizeSelectText: 24px;
     border-radius: 8px;
     cursor: pointer;
 
+    & > * {
+        user-select: none;
+    }
+
     span {
         color: var(--input-signature-color);
         font-size: $fonSizeSelectText;
     }
-}
 
-.select.open {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
+    &.open {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
 
-    span {
-        color: black;
+        span {
+            color: black;
+        }
     }
-}
 
-.select:focus-within {
-    border: 2px solid var(--select-focus-color);
-    outline: none;
+    &:focus-within {
+        border: 2px solid var(--select-focus-color);
+        outline: none;
+    }
 }
 
 .selectTitle {
@@ -57,39 +62,47 @@ $fonSizeSelectText: 24px;
 .select-dropdown {
     position: absolute;
     left: 0;
-    display: none;
     width: $selectWidth;
     border-bottom: none;
-}
+    opacity: 0;
+    pointer-events: none;
+    transition: $transitionDropDown;
 
-.select-dropdown.open {
-    display: block;
+    &.open {
+        display: block;
+        opacity: 1;
+        pointer-events: all;
+    }
 }
 
 .select-dropdown__item {
+    display: block;
+    width: 100%;
     padding: $selectPadding;
     border: 1px solid var(--input-border-color);
-    border-bottom: none;
+    border-top: none;
     background: white;
     color: var(--select-item-text-color);
     cursor: pointer;
     font-size: $fonSizeSelectText;
-}
+    outline: none;
 
-.select-dropdown__item.active {
-    @include select-item-active-effect;
-}
+    &:focus,
+    &:hover,
+    &.active {
+        @include select-item-active-effect;
+    }
 
-.select-dropdown__item:first-child {
-    border-top: none;
-}
+    &:first-child {
+        border-top: none;
+    }
 
-.select-dropdown__item:last-child {
-    border: 1px solid var(--input-border-color);
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-}
+    &:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
 
-.select-dropdown__item:hover {
-    @include select-item-active-effect;
+    &:disabled {
+        opacity: 0.3;
+    }
 }

@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react'
+import { ButtonHTMLAttributes } from 'react'
 
 export interface ISelectProps {
     className?: string
@@ -8,7 +8,7 @@ export interface ISelectProps {
     onChange: (data: string) => void
 }
 
-export interface IDropDownItemProps extends InputHTMLAttributes<HTMLDivElement> {
+export interface IDropDownItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
     data: string
     onClick?: () => void
