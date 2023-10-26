@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import { FC, useState, useEffect, KeyboardEvent, memo } from 'react'
 import ArrowIcon from 'shared/assets/icons/arrow.svg?react'
 import { v4 } from 'uuid'
 import { DropDownItem } from './DropDownItem/DropDownItem'
@@ -8,7 +8,7 @@ import { ISelectProps } from '../types/select'
 
 import './style/variables.scss'
 
-export const Select: FC<ISelectProps> = (props) => {
+export const Select: FC<ISelectProps> = memo((props) => {
     const { selectTitle, signature, dataList, onChange } = props
 
     const [isOpen, setIsOpen] = useState(false)
@@ -20,13 +20,15 @@ export const Select: FC<ISelectProps> = (props) => {
         setIsOpen((p) => (p = !p))
     }
 
-    const onKeyPressDropDownOpen = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    //Функция закрытия/открытия по нажатию на enter
+    const onKeyPressDropDownOpen = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') {
             toggleDropDown()
         }
     }
 
-    const chooseValue = (data: string) => {
+    //Функция выбора значения
+    const selectValue = (data: string) => {
         setCurrentData(data)
         onChange(data)
         toggleDropDown()
@@ -41,7 +43,7 @@ export const Select: FC<ISelectProps> = (props) => {
             {selectTitle && <h3 className={s['select-title']}>{selectTitle}</h3>}
             <div
                 tabIndex={0}
-                onClick={() => toggleDropDown()}
+                onClick={toggleDropDown}
                 onKeyDown={onKeyPressDropDownOpen}
                 className={cn(s.select, isOpenClass)}
             >
@@ -54,7 +56,7 @@ export const Select: FC<ISelectProps> = (props) => {
                         <DropDownItem
                             key={v4()}
                             data={data}
-                            onClick={() => chooseValue(data)}
+                            onClick={() => selectValue(data)}
                             className={cn(s['select-dropdown__item'], {
                                 [s.active]: currentData === data,
                             })}
@@ -65,4 +67,6 @@ export const Select: FC<ISelectProps> = (props) => {
             {signature && <h5 className={s.signature}>{signature}</h5>}
         </div>
     )
-}
+})
+
+Select.displayName = 'Select'
