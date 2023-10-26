@@ -1,0 +1,38 @@
+@import url('../style/variables.scss');
+
+@mixin select-item-active-effect {
+    background: var(--select-item-hover-background-color);
+    color: var(--select-item-hover-text-color);
+}
+
+.dropdown__item {
+    display: block;
+    width: 100%;
+    padding: var(--select-padding);
+    border: 1px solid var(--input-border-color);
+    border-top: none;
+    background: white;
+    color: var(--select-item-text-color);
+    cursor: pointer;
+    font-size: var(--font-size-select-text);
+    outline: none;
+
+    &:focus,
+    &:hover,
+    &.active {
+        @include select-item-active-effect;
+    }
+
+    &:first-child {
+        border-top: none;
+    }
+
+    &:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    &:disabled {
+        opacity: 0.3;
+    }
+}

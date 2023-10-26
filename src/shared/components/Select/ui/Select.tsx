@@ -57,9 +57,7 @@ export const Select: FC<ISelectProps> = memo((props) => {
                             key={v4()}
                             data={data}
                             onClick={() => selectValue(data)}
-                            className={cn(s['select-dropdown__item'], {
-                                [s.active]: currentData === data,
-                            })}
+                            isActive={data === currentData}
                         />
                     )
                 })}

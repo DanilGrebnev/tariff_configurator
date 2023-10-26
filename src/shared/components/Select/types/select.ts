@@ -11,5 +11,6 @@ export interface ISelectProps {
 export interface IDropDownItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
     data: string
+    isActive?: boolean
     onClick?: () => void
 }

@@ -1,7 +1,4 @@
-$selectWidth: 368px;
-$selectPadding: 16px 18px;
-$fonSizeSelectText: 24px;
-$transitionDropDown: 0.1s;
+@import url('variables.scss');
 
 @mixin select-item-active-effect {
     background: var(--select-item-hover-background-color);
@@ -15,17 +12,17 @@ $transitionDropDown: 0.1s;
 
     position: relative;
     display: flex;
-    max-width: $selectWidth;
+    max-width: var(--select-width);
     align-items: center;
     justify-content: space-between;
-    padding: $selectPadding;
+    padding: var(--select-padding);
     border: 1px solid var(--input-border-color);
     border-radius: 8px;
     cursor: pointer;
 
     span {
         color: var(--input-signature-color);
-        font-size: $fonSizeSelectText;
+        font-size: var(--font-size-select-text);
     }
 
     &.open {
@@ -45,48 +42,16 @@ $transitionDropDown: 0.1s;
     &-dropdown {
         position: absolute;
         left: 0;
-        width: $selectWidth;
+        width: var(--select-width);
         border-bottom: none;
         opacity: 0;
         pointer-events: none;
-        transition: $transitionDropDown;
+        transition: var(--transition-drop-down);
 
         &.open {
             display: block;
             opacity: 1;
             pointer-events: all;
-        }
-
-        &__item {
-            display: block;
-            width: 100%;
-            padding: $selectPadding;
-            border: 1px solid var(--input-border-color);
-            border-top: none;
-            background: white;
-            color: var(--select-item-text-color);
-            cursor: pointer;
-            font-size: $fonSizeSelectText;
-            outline: none;
-
-            &:focus,
-            &:hover,
-            &.active {
-                @include select-item-active-effect;
-            }
-
-            &:first-child {
-                border-top: none;
-            }
-
-            &:last-child {
-                border-bottom-left-radius: 8px;
-                border-bottom-right-radius: 8px;
-            }
-
-            &:disabled {
-                opacity: 0.3;
-            }
         }
     }
 

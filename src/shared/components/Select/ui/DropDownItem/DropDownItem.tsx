@@ -1,14 +1,16 @@
 import { FC } from 'react'
 import { IDropDownItemProps } from '../../types/select'
+import cn from 'classnames'
+import s from './DropDownItem.module.scss'
 
 export const DropDownItem: FC<IDropDownItemProps> = (props) => {
-    const { className, data, onClick, ...otherProps } = props
+    const { data, isActive, onClick, ...otherProps } = props
 
     return (
         <button
             {...otherProps}
             onClick={onClick}
-            className={className}
+            className={cn(s['dropdown__item'], { [s.active]: isActive })}
         >
             {data}
         </button>
