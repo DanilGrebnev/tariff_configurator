@@ -1,15 +1,49 @@
+:root {
+    --input-error-color: #eb5757;
+    --input-main-color: #7a5cfa;
+}
+
+$transition: 0.05s;
+
+.error_icon {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition: $transition;
+}
+
 .input {
+    &_wrapper {
+        position: relative;
+        width: fit-content;
+    }
+
     width: 368px;
     padding: 18px 16px;
     border: 1px solid var(--input-border-color);
     border-radius: 8px;
     font-size: 24px;
     outline: none;
-}
+    transition: border $transition;
 
-.input-title {
-    margin-bottom: 40px;
-    font-size: 32px;
+    &:focus {
+        border: 2px solid #7a5cfa;
+    }
+
+    &-title {
+        margin-bottom: 40px;
+        font-size: 32px;
+    }
+
+    &.error {
+        border: 2px solid var(--input-error-color);
+    }
+
+    &.error + .error_icon {
+        opacity: 1;
+    }
 }
 
 .signature {
@@ -17,4 +51,8 @@
     color: var(--input-signature-color);
     font-size: 12px;
     font-weight: normal;
+
+    &.error {
+        color: #eb5757;
+    }
 }

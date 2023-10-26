@@ -1,24 +1,31 @@
-import { FC, InputHTMLAttributes } from 'react'
-
+import { FC, ChangeEvent } from 'react'
+import ErrorIcon from 'shared/assets/icons/error_input.svg?react'
+import cn from 'classnames'
 import s from './Input.module.scss'
-
-interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
-    className?: string
-    inputTitle?: string
-    signature?: string
-}
+import { IInputProps } from '../types/input'
 
 export const Input: FC<IInputProps> = (props) => {
-    const { inputTitle, signature, ...otherProps } = props
+    const { inputTitle, onChange, value, isError, signature, ...otherProps } = props
+    const errorClass = cn({ [s.error]: isError })
+
+    const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+        if (!onChange) return
+        onChange(e.target.value)
+    }
 
     return (
-        <div className={s['input-wrapper']}>
+        <div className={s['input-container']}>
             {inputTitle && <h3 className={s['input-title']}>{inputTitle}</h3>}
-            <input
-                className={s.input}
-                {...otherProps}
-            />
-            {signature && <h5 className={s.signature}>{signature}</h5>}
+            <div className={s['input_wrapper']}>
+                <input
+                    value={value}
+                    className={cn(s.input, errorClass)}
+                    onChange={onChangeValue}
+                    {...otherProps}
+                />
+                <ErrorIcon className={s['error_icon']} />
+            </div>
+            {signature && <h5 className={cn(s.signature, errorClass)}>{signature}</h5>}
         </div>
     )
 }
