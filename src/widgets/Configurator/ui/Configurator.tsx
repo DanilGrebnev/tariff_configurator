@@ -2,6 +2,7 @@ import { FC, useState } from 'react'
 import s from './Configurator.module.scss'
 import { Input } from 'shared/components/Input'
 import { Select } from '@/shared/components/Select'
+import { Range } from '@/shared/components/Range'
 
 interface IConfiguratorProps {
     className?: string
@@ -31,6 +32,7 @@ export const Configurator: FC<IConfiguratorProps> = () => {
                     // console.log(data)
                 }}
             />
+            <Range />
         </section>
     )
 }
