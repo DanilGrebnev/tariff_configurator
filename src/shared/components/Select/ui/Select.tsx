@@ -7,6 +7,7 @@ import s from './style/Select.module.scss'
 import { ISelectProps } from '../types/select'
 
 import './style/variables.scss'
+import { Title } from '../../Title'
 
 export const Select: FC<ISelectProps> = memo((props) => {
     const { selectTitle, signature, dataList, onChange } = props
@@ -40,7 +41,7 @@ export const Select: FC<ISelectProps> = memo((props) => {
 
     return (
         <div className={s['select-wrapper']}>
-            {selectTitle && <h3 className={s['select-title']}>{selectTitle}</h3>}
+            {selectTitle && <Title className={s['select-title']}>{selectTitle}</Title>}
             <div
                 tabIndex={0}
                 onClick={toggleDropDown}
@@ -62,6 +63,7 @@ export const Select: FC<ISelectProps> = memo((props) => {
                     )
                 })}
             </div>
+
             {signature && <h5 className={s.signature}>{signature}</h5>}
         </div>
     )

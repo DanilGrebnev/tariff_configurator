@@ -1,17 +1,25 @@
-import { FC, memo, useState, useRef, useEffect, useCallback } from 'react'
+import { FC, memo, useState, useRef, useEffect, useCallback, MouseEventHandler } from 'react'
 import Rectangle from 'shared/assets/icons/reactangle.svg?react'
 import cn from 'classnames'
 import s from './Range.module.scss'
-import { debounce } from '@/shared/lib/debounce'
+import { Title } from '../../Title'
 
 interface RangeProps {
     className?: string
+    values: number[]
+    test?: boolean
+    rangeTitle?: string
+    onChange: (value: number) => void
+    fillTrackColor?: string
+    thumbColor?: string
 }
 
 type TRangeLine = number | undefined
-type TRangeZones = { [key: string]: number }
+type TRangeZones = Record<string, number>
 
-export const Range: FC<RangeProps> = memo(() => {
+export const Range: FC<RangeProps> = memo((props) => {
+    const { values, test, onChange, rangeTitle, fillTrackColor, thumbColor } = props
+
     const rangeLineRef = useRef<HTMLDivElement>(null)
     const rangeFillLineRef = useRef<HTMLDivElement>(null)
     const rangeContainerRef = useRef<HTMLDivElement>(null)
@@ -27,12 +35,17 @@ export const Range: FC<RangeProps> = memo(() => {
     // на thumb и изменить тип курсора на grabbing
     const [isMoveThumb, setIsMoveThumb] = useState(false)
 
-    //Считываем позицию курсора мыши
+    //Считываем позицию курсора мыши по координате x
     const [cursorPositionX, setCursorPositionX] = useState(0)
 
+    /**
+     * Хранит пары key/value, где key - thumb значение,
+     * а value - диапазон в пикселях, которые присущи данному
+     * значению
+     */
     const [rangeZones, setRangeZones] = useState<TRangeZones>({})
 
-    const [value, setValue] = useState('')
+    const [value, setValue] = useState<number>(values[0])
 
     const changeThumbPosition = useCallback(
         ({ clientX }: MouseEvent) => {
@@ -57,6 +70,10 @@ export const Range: FC<RangeProps> = memo(() => {
         },
         [rangeContainerStartPosition]
     )
+
+    const onClick = (e: MouseEvent) => {
+        changeThumbPosition(e)
+    }
 
     /**
      * Удаление обработчика события с thumb
@@ -83,7 +100,7 @@ export const Range: FC<RangeProps> = memo(() => {
     }
 
     /**
-     * Удаляет обработчик события с thumb, если мышка выходит
+     * Удаляет обработчик события с thumb, если курсор выходит
      * за его границы
      */
     const onMouseOut = () => {
@@ -95,46 +112,46 @@ export const Range: FC<RangeProps> = memo(() => {
         const rangeContainer = rangeContainerRef.current
         const rangeContainerStartCoordinateX = rangeContainer?.getBoundingClientRect().x
         setRangeContainerStartPosition(rangeContainerStartCoordinateX)
-        // Устанавливаем длинну контейнера
+        // Получаем длинну range контейнера
         setRangeContainerWidth(rangeContainer?.clientWidth)
     }, [])
 
-    /** Функция
-     *
+    /**
+     * Функция высчитывает площадь зон значений в пикселях.
      */
-    const calculateRangeZone = useCallback(
-        (rangeContainerWidth: number) => {
-            const zoneWidth = rangeContainerWidth / 4
-            const o: { [key: string]: number } = {}
+    const calculateRangeZones = (rangeContainerWidth: number) => {
+        const amountValues = values.length
+        const zoneWidth = rangeContainerWidth / amountValues
+        // переменная o - хранит значения расчёта range зон
+        const o: TRangeZones = {}
 
-            for (let i = 0; i < 4; i++) {
-                if (i === 0) {
-                    o['zone' + i] = zoneWidth
-                    continue
-                }
+        for (let i = 0; i < values.length; i++) {
+            const key = values[i]
+            const prevKey = values[i - 1]
 
-                o['zone' + i] = o['zone' + (i - 1)] + zoneWidth
+            if (!i) {
+                o[key] = zoneWidth
+                continue
             }
-            // Прибавляем к значениям позицию с которой начинается range контейнер
-            Object.entries(o).forEach(([k, v]) => (o[k] = v + rangeContainerStartPosition!))
 
-            setRangeZones(rangeZones)
-        },
-        [rangeContainerStartPosition, rangeZones]
-    )
+            o[key] = o[prevKey] + zoneWidth
+        }
+
+        setRangeZones(o)
+    }
 
     useEffect(() => {
         if (!rangeContainerWidth) return
-        calculateRangeZone(rangeContainerWidth)
-    }, [rangeContainerWidth, calculateRangeZone])
+        calculateRangeZones(rangeContainerWidth)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [rangeContainerWidth])
 
     /**
      * Функция считает значение относительно положения
      * thumb
      */
-    const calculateThumbValues = useCallback(() => {
+    const calculateThumbValues = () => {
         const a = Object.entries(rangeZones)
-
         for (let i = 0; i < a.length; i++) {
             const [zoneName, zoneCoordinateEnd] = a[i]
             /**  Если курсор по координате x находится
@@ -142,25 +159,43 @@ export const Range: FC<RangeProps> = memo(() => {
             зона значения, тогда считается, текущая зона
             */
             if (cursorPositionX <= zoneCoordinateEnd) {
-                console.log(zoneName)
+                setValue(+zoneName)
                 break
             }
         }
-    }, [cursorPositionX, rangeZones])
+    }
+
+    useEffect(() => {
+        onChange(value)
+    }, [value, onChange])
 
     useEffect(() => {
         calculateThumbValues()
-    }, [calculateThumbValues])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cursorPositionX])
 
-    const rangeFillLineWidthPX = cursorPositionX + 'px'
+    useEffect(() => {
+        if (test) {
+            console.log('value:', value)
+        }
+    }, [value, test])
+
+    useEffect(() => {
+        if (test) {
+            console.log('range zone', rangeZones)
+        }
+    }, [rangeZones, test])
+
     const thumbCenter = (thumbRef.current?.clientHeight as number) / 2
-    const thumbXPositionPX = cursorPositionX - thumbCenter + 'px'
+    const rangeFillLineWidthPX = cursorPositionX + 'px'
+    const thumbPositionPX = cursorPositionX - thumbCenter + 'px'
 
     return (
         <div
             ref={rangeContainerRef}
             className={s['range-container']}
         >
+            {rangeTitle && <Title className={s['range-title']}>{rangeTitle}</Title>}
             <div className={s['range-wrapper']}>
                 <div
                     ref={rangeLineRef}
@@ -169,7 +204,7 @@ export const Range: FC<RangeProps> = memo(() => {
                 <div
                     ref={rangeFillLineRef}
                     className={s['range-line--fill']}
-                    style={{ width: rangeFillLineWidthPX }}
+                    style={{ width: rangeFillLineWidthPX, background: fillTrackColor }}
                 >
                     <div
                         ref={thumbRef}
@@ -178,19 +213,36 @@ export const Range: FC<RangeProps> = memo(() => {
                         onMouseLeave={onMouseOut}
                         className={cn(s['range-thumb'], { [s.active]: isMoveThumb })}
                         style={{
-                            left: thumbXPositionPX,
+                            left: thumbPositionPX,
+                            background: thumbColor,
                         }}
                     >
                         <Rectangle className={s.rectangle} />
+                        {test && (
+                            <>
+                                <div className={s.testLine}></div>
+                                <div className={s.testCursorValue}>{cursorPositionX}px</div>
+                                <div className={s.testValues}>{value}value</div>
+                            </>
+                        )}
+
                         <Rectangle className={s.rectangle} />
                     </div>
                 </div>
             </div>
             <div className={s['range-number-line']}>
-                <div className={s['range-number__item']}>200</div>
-                <div className={s['range-number__item']}>350</div>
-                <div className={s['range-number__item']}>600</div>
-                <div className={s['range-number__item']}>650</div>
+                {values?.map((value, i) => {
+                    return (
+                        <div
+                            key={i}
+                            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                            onClick={(e: any) => onClick(e)}
+                            className={cn(s['range-number__item'], { [s.test]: test })}
+                        >
+                            {value}
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )

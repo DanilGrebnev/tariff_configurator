@@ -5,8 +5,7 @@
 
 .range {
     &-container {
-        width: 1200px;
-        margin-left: 100px;
+        width: 1000px;
     }
 
     &-wrapper {
@@ -52,6 +51,36 @@
     &-thumb.active {
         cursor: grabbing;
     }
+
+    &-title {
+        margin-bottom: 70px;
+    }
+}
+
+.testLine {
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 100px;
+    background: black;
+    pointer-events: none;
+}
+
+.testValues {
+    position: absolute;
+    top: -30px;
+    display: flex;
+    height: 30px;
+    justify-content: center;
+    border: 1px solid black;
+    pointer-events: none;
+}
+
+.testCursorValue {
+    position: absolute;
+    top: -60px;
+    height: 30px;
+    border: 1px solid black;
 }
 
 .range-number-line {
@@ -61,8 +90,27 @@
 }
 
 .range-number__item {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    border-right: none;
+    cursor: pointer;
     font-size: 24px;
     font-weight: 500;
+
+    &:first-child {
+        justify-content: start;
+    }
+
+    &:last-child {
+        display: flex;
+        justify-content: end;
+    }
+}
+
+.range-number__item.test {
+    border: 1px solid black;
 }
 
 .rectangle {

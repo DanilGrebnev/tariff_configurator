@@ -1,38 +1,49 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import s from './Configurator.module.scss'
 import { Input } from 'shared/components/Input'
-import { Select } from '@/shared/components/Select'
-import { Range } from '@/shared/components/Range'
+import { Select } from 'shared/components/Select'
+import { Range } from 'shared/components/Range'
+import { Title } from 'shared/components/Title'
 
 interface IConfiguratorProps {
     className?: string
 }
 
 const a = ['Оператор 1', 'Оператор 2', 'Оператор 3']
+const rangeValuesGigs = [200, 250, 600, 650]
+const rangeValuesMinutes = [5, 15, 30, 35]
 
 export const Configurator: FC<IConfiguratorProps> = () => {
-    const [error, setError] = useState(false)
-
     return (
         <section
             id="configurator"
             className={s.Configurator}
         >
-            <button onClick={() => setError((p) => (p = !p))}>toggle</button>
-            <h1>Настройте тариф</h1>
+            <Title size="L">Настройте тариф</Title>
             <Input
-                isError={error}
                 inputTitle="Телефон"
                 placeholder="+7 (___) ___-__-__"
                 signature="Обязательное поле"
             />
             <Select
                 dataList={a}
+                selectTitle="Оператор"
                 onChange={(data) => {
                     // console.log(data)
                 }}
             />
-            <Range />
+            <Range
+                rangeTitle="Интернет"
+                onChange={(value) => console.log(value)}
+                values={rangeValuesGigs}
+            />
+            <Range
+                rangeTitle="Гигабайты"
+                thumbColor="black"
+                fillTrackColor="black"
+                onChange={(value) => console.log(value)}
+                values={rangeValuesMinutes}
+            />
         </section>
     )
 }

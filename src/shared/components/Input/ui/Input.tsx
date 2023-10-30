@@ -1,5 +1,6 @@
 import { FC, ChangeEvent } from 'react'
 import ErrorIcon from 'shared/assets/icons/error_input.svg?react'
+import { Title } from 'shared/components/Title'
 import cn from 'classnames'
 import s from './Input.module.scss'
 import { IInputProps } from '../types/input'
@@ -15,7 +16,7 @@ export const Input: FC<IInputProps> = (props) => {
 
     return (
         <div className={s['input-container']}>
-            {inputTitle && <h3 className={s['input-title']}>{inputTitle}</h3>}
+            {inputTitle && <Title className={s['input-title']}>{inputTitle}</Title>}
             <div className={s['input_wrapper']}>
                 <input
                     value={value}

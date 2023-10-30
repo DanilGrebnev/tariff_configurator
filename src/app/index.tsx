@@ -1,8 +1,8 @@
-import { Configurator } from 'widgets/Configurator'
-import './style/index.scss'
+import './style/app.scss'
+import { ConfiguratorPage } from '@/pages/Configurator/ConfiguratorPage'
 
 export const App = () => (
     <div className="app">
-        <Configurator />
+        <ConfiguratorPage />
     </div>
 )
