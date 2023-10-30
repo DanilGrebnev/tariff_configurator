@@ -5,5 +5,4 @@ export interface IInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>,
     signature?: string
     isError?: boolean
     onChange?: (input: string) => void
-    value?: string
 }

@@ -1,13 +1,15 @@
 import { FC, useState, useEffect, KeyboardEvent, memo } from 'react'
-import ArrowIcon from 'shared/assets/icons/arrow.svg?react'
 import { v4 } from 'uuid'
 import { DropDownItem } from './DropDownItem/DropDownItem'
+import { ISelectProps } from '../types/select'
+import { Title } from '../../Title'
+
+import ArrowIcon from 'shared/assets/icons/arrow.svg?react'
+
 import cn from 'classnames'
 import s from './style/Select.module.scss'
-import { ISelectProps } from '../types/select'
 
 import './style/variables.scss'
-import { Title } from '../../Title'
 
 export const Select: FC<ISelectProps> = memo((props) => {
     const { selectTitle, signature, dataList, onChange } = props
@@ -37,7 +39,8 @@ export const Select: FC<ISelectProps> = memo((props) => {
 
     useEffect(() => {
         onChange(currentData)
-    }, [onChange, currentData])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentData])
 
     return (
         <div className={s['select-wrapper']}>

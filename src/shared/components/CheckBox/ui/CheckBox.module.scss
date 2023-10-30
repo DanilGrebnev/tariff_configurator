@@ -1,0 +1,41 @@
+$checkSize: 24px;
+$checkColor: #b8c6cf;
+$checkedColor: #7a5cfa;
+
+.checkbox {
+    &-wrapper {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        gap: 15px;
+        user-select: none;
+    }
+
+    &-input {
+        display: none;
+    }
+
+    &-checked {
+        display: none;
+        width: $checkSize;
+        height: $checkSize;
+        border-radius: 5px;
+        background: $checkedColor;
+    }
+
+    &-check {
+        width: $checkSize;
+        height: $checkSize;
+        border: 1px solid $checkColor;
+        border-radius: 5px;
+        background: white;
+    }
+
+    &-input:checked ~ &-check {
+        display: none;
+    }
+
+    &-input:checked ~ &-checked {
+        display: block;
+    }
+}

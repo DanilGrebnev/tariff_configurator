@@ -43,7 +43,8 @@
         }
     }
 
-    &:focus-within {
+    &:focus {
+        box-sizing: border-box;
         border: 2px solid var(--select-focus-color);
         outline: none;
     }

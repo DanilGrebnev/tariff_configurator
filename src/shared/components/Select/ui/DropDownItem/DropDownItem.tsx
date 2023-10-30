@@ -1,9 +1,9 @@
-import { FC } from 'react'
+import { FC, memo } from 'react'
 import { IDropDownItemProps } from '../../types/select'
 import cn from 'classnames'
 import s from './DropDownItem.module.scss'
 
-export const DropDownItem: FC<IDropDownItemProps> = (props) => {
+export const DropDownItem: FC<IDropDownItemProps> = memo((props) => {
     const { data, isActive, onClick, ...otherProps } = props
 
     return (
@@ -15,4 +15,6 @@ export const DropDownItem: FC<IDropDownItemProps> = (props) => {
             {data}
         </button>
     )
-}
+})
+
+DropDownItem.displayName = 'DropDownItem'
