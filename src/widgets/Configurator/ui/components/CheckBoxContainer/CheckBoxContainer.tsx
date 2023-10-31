@@ -1,40 +1,50 @@
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 import { CheckBox } from 'shared/components/CheckBox'
 import { Title } from 'shared/components/Title'
 
 import s from './CheckBoxContainer.module.scss'
+import { configuratorActions } from '@/entities/configurator'
+import { useAppDispatch } from '@/app/providers/storeProvider'
+
+type TCheckBoxItem = {
+    name: string
+    value: string
+    signature: string
+    defaultChecked?: boolean
+}
 
 interface ICheckBoxContainerProps {
     className?: string
-    onChange: (value: string) => void
+    name?: string
+    signature?: string
+    data?: TCheckBoxItem[]
 }
 
 export const CheckBoxContainer: FC<ICheckBoxContainerProps> = (props) => {
-    const { onChange } = props
+    const { data } = props
 
-    const changeValue = (value: string) => {
-        onChange(value)
-    }
+    const dispatch = useAppDispatch()
+
+    const changeRouter = useCallback(
+        (value: string) => {
+            dispatch(configuratorActions.setRouter(value))
+        },
+        [dispatch]
+    )
 
     return (
         <div className={s.CheckBoxContainer}>
             <Title style={{ marginBottom: '40px' }}>Wi-Fi роутер</Title>
-            <CheckBox
-                defaultChecked
-                value="rent"
-                name="wi-fi"
-                signature="Аренда 99 ₽/мес."
-                type="radio"
-                onChange={changeValue}
-                className={s.radio1}
-            />
-            <CheckBox
-                onChange={changeValue}
-                value="purchase"
-                name="wi-fi"
-                type="radio"
-                signature="Выкупить 2600 ₽/мес."
-            />
+            {data?.map((props) => {
+                return (
+                    <CheckBox
+                        {...props}
+                        onChange={changeRouter}
+                        type="radio"
+                        className={s.radio}
+                    />
+                )
+            })}
         </div>
     )
 }

@@ -17,16 +17,23 @@ interface IConfiguratorProps {
 const a = ['Оператор 1', 'Оператор 2', 'Оператор 3']
 const rangeValuesGigs = [200, 250, 600, 650]
 const rangeValuesMinutes = [5, 15, 30, 35]
+const checkBoxesValues = [
+    {
+        name: 'wi-fi',
+        value: 'rent',
+        signature: 'Аренда 99 ₽/мес.',
+        defaultChecked: false,
+    },
+    {
+        name: 'wi-fi',
+        value: 'purchase',
+        signature: 'Выкупить 2600 ₽/мес.',
+        defaultChecked: true,
+    },
+]
 
 export const Configurator: FC<IConfiguratorProps> = () => {
     const dispatch = useAppDispatch()
-
-    const changeRouter = useCallback(
-        (value: string) => {
-            dispatch(configuratorActions.setRouter(value))
-        },
-        [dispatch]
-    )
 
     const changeMinutes = useCallback(
         (value: number) => {
@@ -85,7 +92,7 @@ export const Configurator: FC<IConfiguratorProps> = () => {
                 onChange={changeGigabyte}
                 values={rangeValuesMinutes}
             />
-            <CheckBoxContainer onChange={changeRouter} />
+            <CheckBoxContainer data={checkBoxesValues} />
             <SocialNetwork />
         </section>
     )
