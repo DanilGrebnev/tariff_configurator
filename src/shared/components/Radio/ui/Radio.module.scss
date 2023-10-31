@@ -13,17 +13,23 @@ $bottom-radius: 15px;
     border-radius: $topRadius $topRadius $bottom-radius $bottom-radius;
     cursor: pointer;
     gap: 15px;
+    line-height: 1;
 
     input {
         display: none;
     }
 
-    span {
+    p {
         font-size: 24px;
         user-select: none;
     }
 
-    &.active {
+    &.checked {
         background: white;
     }
+}
+
+.radio-icon {
+    max-width: 60px;
+    max-height: 60px;
 }

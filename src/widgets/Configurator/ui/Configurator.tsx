@@ -1,12 +1,12 @@
-import { FC, useState, useCallback } from 'react'
+import { FC, useCallback } from 'react'
 import { Input } from 'shared/components/Input'
 import { Select } from 'shared/components/Select'
 import { Range } from 'shared/components/Range'
 import { Title } from 'shared/components/Title'
 import { CheckBoxContainer } from './components/CheckBoxContainer/CheckBoxContainer'
-import { Radio } from 'shared/components/Radio'
-
-import VkIcon from 'shared/assets/icons/vk_icon.svg?react'
+import { SocialNetwork } from './components/SocialNetwork/SocialNetwork'
+import { configuratorActions } from '@/entities/configurator'
+import { useAppDispatch } from '@/app/providers/storeProvider'
 
 import s from './Configurator.module.scss'
 
@@ -19,31 +19,42 @@ const rangeValuesGigs = [200, 250, 600, 650]
 const rangeValuesMinutes = [5, 15, 30, 35]
 
 export const Configurator: FC<IConfiguratorProps> = () => {
-    const [router, setRouter] = useState<string>('purchase')
-    const [minutes, setMinutes] = useState<number>(0)
-    const [gigabyte, setGigabyte] = useState<number>(0)
-    const [inputValue, setInputValue] = useState<string>('')
-    const [operator, setOperator] = useState<string>('')
+    const dispatch = useAppDispatch()
 
-    const changeRouter = useCallback((value: string) => {
-        setRouter(value)
-    }, [])
+    const changeRouter = useCallback(
+        (value: string) => {
+            dispatch(configuratorActions.setRouter(value))
+        },
+        [dispatch]
+    )
 
-    const changeMinutes = useCallback((value: number) => {
-        setMinutes(value)
-    }, [])
+    const changeMinutes = useCallback(
+        (value: number) => {
+            dispatch(configuratorActions.setMinutes(value))
+        },
+        [dispatch]
+    )
 
-    const changeGigabyte = useCallback((value: number) => {
-        setGigabyte(value)
-    }, [])
+    const changeGigabyte = useCallback(
+        (value: number) => {
+            dispatch(configuratorActions.setGigabytes(value))
+        },
+        [dispatch]
+    )
 
-    const changeInputValue = useCallback((value: string) => {
-        setInputValue(value)
-    }, [])
+    const changeInputValue = useCallback(
+        (value: string) => {
+            dispatch(configuratorActions.setPhone(value))
+        },
+        [dispatch]
+    )
 
-    const changeOperatorValue = useCallback((value: string) => {
-        setOperator(value)
-    }, [])
+    const changeOperatorValue = useCallback(
+        (value: string) => {
+            dispatch(configuratorActions.setOperator(value))
+        },
+        [dispatch]
+    )
 
     return (
         <section
@@ -52,7 +63,6 @@ export const Configurator: FC<IConfiguratorProps> = () => {
         >
             <Title size="L">Настройте тариф</Title>
             <Input
-                value={inputValue}
                 inputTitle="Телефон"
                 placeholder="+7 (___) ___-__-__"
                 signature="Обязательное поле"
@@ -76,7 +86,7 @@ export const Configurator: FC<IConfiguratorProps> = () => {
                 values={rangeValuesMinutes}
             />
             <CheckBoxContainer onChange={changeRouter} />
-            <Radio icon={<VkIcon />} />
+            <SocialNetwork />
         </section>
     )
 }

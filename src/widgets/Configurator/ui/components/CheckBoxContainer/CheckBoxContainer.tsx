@@ -1,4 +1,4 @@
-import { FC, ChangeEvent } from 'react'
+import { FC } from 'react'
 import { CheckBox } from 'shared/components/CheckBox'
 import { Title } from 'shared/components/Title'
 
@@ -12,14 +12,15 @@ interface ICheckBoxContainerProps {
 export const CheckBoxContainer: FC<ICheckBoxContainerProps> = (props) => {
     const { onChange } = props
 
-    const changeValue = (e: ChangeEvent<HTMLInputElement>) => {
-        onChange(e.target.value)
+    const changeValue = (value: string) => {
+        onChange(value)
     }
 
     return (
         <div className={s.CheckBoxContainer}>
             <Title style={{ marginBottom: '40px' }}>Wi-Fi роутер</Title>
             <CheckBox
+                defaultChecked
                 value="rent"
                 name="wi-fi"
                 signature="Аренда 99 ₽/мес."
@@ -28,7 +29,6 @@ export const CheckBoxContainer: FC<ICheckBoxContainerProps> = (props) => {
                 className={s.radio1}
             />
             <CheckBox
-                defaultChecked
                 onChange={changeValue}
                 value="purchase"
                 name="wi-fi"

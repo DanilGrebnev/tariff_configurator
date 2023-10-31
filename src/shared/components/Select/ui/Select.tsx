@@ -39,8 +39,7 @@ export const Select: FC<ISelectProps> = memo((props) => {
 
     useEffect(() => {
         onChange(currentData)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentData])
+    }, [currentData, onChange])
 
     return (
         <div className={s['select-wrapper']}>

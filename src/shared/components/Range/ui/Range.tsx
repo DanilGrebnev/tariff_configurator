@@ -1,4 +1,4 @@
-import { FC, memo, useState, useRef, useEffect, useCallback, MouseEventHandler } from 'react'
+import { FC, memo, useState, useRef, useEffect, useLayoutEffect, useCallback } from 'react'
 import Rectangle from 'shared/assets/icons/reactangle.svg?react'
 import cn from 'classnames'
 import s from './Range.module.scss'
@@ -24,9 +24,6 @@ export const Range: FC<RangeProps> = memo((props) => {
     const rangeFillLineRef = useRef<HTMLDivElement>(null)
     const rangeContainerRef = useRef<HTMLDivElement>(null)
     const thumbRef = useRef<HTMLDivElement>(null)
-
-    //Длинна range контейнера
-    const [rangeContainerWidth, setRangeContainerWidth] = useState<TRangeLine>(0)
 
     // Получаем начало range контейнера относительно страницы
     const [rangeContainerStartPosition, setRangeContainerStartPosition] = useState<TRangeLine>(0)
@@ -107,44 +104,41 @@ export const Range: FC<RangeProps> = memo((props) => {
         removeEventListenerFromThumb()
     }
 
-    useEffect(() => {
+    /**
+     * Функция высчитывает площадь зон значений в пикселях.
+     */
+    const calculateRangeZones = useCallback(
+        (rangeContainerWidth: number) => {
+            const amountValues = values.length
+            const zoneWidth = rangeContainerWidth / amountValues
+            // переменная o - хранит значения расчёта range зон
+            const o: TRangeZones = {}
+
+            for (let i = 0; i < values.length; i++) {
+                const key = values[i]
+                const prevKey = values[i - 1]
+
+                if (!i) {
+                    o[key] = zoneWidth
+                    continue
+                }
+
+                o[key] = o[prevKey] + zoneWidth
+            }
+
+            setRangeZones(o)
+        },
+        [values]
+    )
+
+    useLayoutEffect(() => {
         // Узнаем, на каком расстоянии от левого края экрана находится range
         const rangeContainer = rangeContainerRef.current
         const rangeContainerStartCoordinateX = rangeContainer?.getBoundingClientRect().x
         setRangeContainerStartPosition(rangeContainerStartCoordinateX)
         // Получаем длинну range контейнера
-        setRangeContainerWidth(rangeContainer?.clientWidth)
-    }, [])
-
-    /**
-     * Функция высчитывает площадь зон значений в пикселях.
-     */
-    const calculateRangeZones = (rangeContainerWidth: number) => {
-        const amountValues = values.length
-        const zoneWidth = rangeContainerWidth / amountValues
-        // переменная o - хранит значения расчёта range зон
-        const o: TRangeZones = {}
-
-        for (let i = 0; i < values.length; i++) {
-            const key = values[i]
-            const prevKey = values[i - 1]
-
-            if (!i) {
-                o[key] = zoneWidth
-                continue
-            }
-
-            o[key] = o[prevKey] + zoneWidth
-        }
-
-        setRangeZones(o)
-    }
-
-    useEffect(() => {
-        if (!rangeContainerWidth) return
-        calculateRangeZones(rangeContainerWidth)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rangeContainerWidth])
+        calculateRangeZones(rangeContainer!.clientWidth)
+    }, [calculateRangeZones])
 
     /**
      * Функция считает значение относительно положения
@@ -174,6 +168,7 @@ export const Range: FC<RangeProps> = memo((props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [cursorPositionX])
 
+    // Тестирование
     useEffect(() => {
         if (test) {
             console.log('value:', value)
@@ -199,10 +194,14 @@ export const Range: FC<RangeProps> = memo((props) => {
             <div className={s['range-wrapper']}>
                 <div
                     ref={rangeLineRef}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    onClick={(e: any) => onClick(e)}
                     className={s['range-line']}
                 ></div>
                 <div
                     ref={rangeFillLineRef}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    onClick={(e: any) => onClick(e)}
                     className={s['range-line--fill']}
                     style={{ width: rangeFillLineWidthPX, background: fillTrackColor }}
                 >
