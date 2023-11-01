@@ -5,7 +5,6 @@ import { ISelectProps } from '../types/select'
 import { Title } from '../../Title'
 
 import ArrowIcon from 'shared/assets/icons/arrow.svg?react'
-
 import cn from 'classnames'
 import s from './style/Select.module.scss'
 
@@ -15,7 +14,7 @@ export const Select: FC<ISelectProps> = memo((props) => {
     const { selectTitle, signature, dataList, onChange } = props
 
     const [isOpen, setIsOpen] = useState(false)
-    const [currentData, setCurrentData] = useState<string>(dataList[0])
+    const [currentData, setCurrentData] = useState<string>('')
 
     const isOpenClass = cn({ [s.open]: isOpen })
 
@@ -23,14 +22,14 @@ export const Select: FC<ISelectProps> = memo((props) => {
         setIsOpen((p) => (p = !p))
     }
 
-    //Функция закрытия/открытия по нажатию на enter
+    /* Функция закрытия/открытия по нажатию на enter */
     const onKeyPressDropDownOpen = (e: KeyboardEvent<HTMLDivElement>) => {
         if (e.key === 'Enter') {
             toggleDropDown()
         }
     }
 
-    //Функция выбора значения
+    /* Функция выбора значения */
     const selectValue = (data: string) => {
         setCurrentData(data)
         onChange(data)
@@ -40,6 +39,12 @@ export const Select: FC<ISelectProps> = memo((props) => {
     useEffect(() => {
         onChange(currentData)
     }, [currentData, onChange])
+
+    /* Установка первоначального состояния в store */
+    useEffect(() => {
+        if (!dataList) return
+        setCurrentData(dataList[0])
+    }, [dataList])
 
     return (
         <div className={s['select-wrapper']}>
@@ -54,7 +59,7 @@ export const Select: FC<ISelectProps> = memo((props) => {
                 <ArrowIcon className={cn(s.arrow, isOpenClass)} />
             </div>
             <div className={cn(s['select-dropdown'], isOpenClass)}>
-                {dataList.map((data) => {
+                {dataList?.map((data) => {
                     return (
                         <DropDownItem
                             key={v4()}

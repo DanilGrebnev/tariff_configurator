@@ -1,27 +1,21 @@
 import { FC, useCallback } from 'react'
 import { CheckBox } from 'shared/components/CheckBox'
 import { Title } from 'shared/components/Title'
+import { ConfiguratorSelectors, configuratorActions } from '@/entities/configurator'
+import { useAppDispatch } from '@/app/providers/storeProvider'
+import { v4 } from 'uuid'
+import { useAppSelector } from '@/app/providers/storeProvider'
 
 import s from './CheckBoxContainer.module.scss'
-import { configuratorActions } from '@/entities/configurator'
-import { useAppDispatch } from '@/app/providers/storeProvider'
-
-type TCheckBoxItem = {
-    name: string
-    value: string
-    signature: string
-    defaultChecked?: boolean
-}
 
 interface ICheckBoxContainerProps {
     className?: string
     name?: string
     signature?: string
-    data?: TCheckBoxItem[]
 }
 
-export const CheckBoxContainer: FC<ICheckBoxContainerProps> = (props) => {
-    const { data } = props
+export const CheckBoxContainer: FC<ICheckBoxContainerProps> = () => {
+    const data = useAppSelector(ConfiguratorSelectors.getData)
 
     const dispatch = useAppDispatch()
 
@@ -35,13 +29,14 @@ export const CheckBoxContainer: FC<ICheckBoxContainerProps> = (props) => {
     return (
         <div className={s.CheckBoxContainer}>
             <Title style={{ marginBottom: '40px' }}>Wi-Fi роутер</Title>
-            {data?.map((props) => {
+            {data?.router?.map((props) => {
                 return (
                     <CheckBox
-                        {...props}
+                        key={v4()}
                         onChange={changeRouter}
                         type="radio"
                         className={s.radio}
+                        {...props}
                     />
                 )
             })}

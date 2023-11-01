@@ -1,11 +1,15 @@
+import { IConfiguratorSchema } from './../schema/configuratorSchema'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { fetchConfiguratorData } from '../services/fetchConfiguratorData'
 
-const initialState = {
+const initialState: IConfiguratorSchema = {
     phone: '',
     operator: '',
     minutes: 0,
     gigabytes: 0,
+    socialMedia: '',
     router: '',
+    data: null,
 }
 
 const configuratorSlice = createSlice({
@@ -27,6 +31,14 @@ const configuratorSlice = createSlice({
         setGigabytes(state, action: PayloadAction<number>) {
             state.gigabytes = action.payload
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchConfiguratorData.pending, (state) => {})
+            .addCase(fetchConfiguratorData.rejected, (state) => {})
+            .addCase(fetchConfiguratorData.fulfilled, (state, action) => {
+                state.data = action.payload
+            })
     },
 })
 

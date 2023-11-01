@@ -4,7 +4,7 @@ export interface ISelectProps {
     className?: string
     selectTitle?: string
     signature?: string
-    dataList: string[]
+    dataList?: string[]
     onChange: (data: string) => void
 }
 

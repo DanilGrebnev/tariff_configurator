@@ -25,14 +25,15 @@ export const Range: FC<RangeProps> = memo((props) => {
     const rangeContainerRef = useRef<HTMLDivElement>(null)
     const thumbRef = useRef<HTMLDivElement>(null)
 
-    // Получаем начало range контейнера относительно страницы
+    /* Получаем начало range контейнера относительно страницы */
     const [rangeContainerStartPosition, setRangeContainerStartPosition] = useState<TRangeLine>(0)
 
-    // Изменяем состояние для того, чтобы повесить класс active
-    // на thumb и изменить тип курсора на grabbing
+    /** Изменяем состояние для того, чтобы повесить класс active
+     * на thumb и изменить тип курсора на grabbing
+     */
     const [isMoveThumb, setIsMoveThumb] = useState(false)
 
-    //Считываем позицию курсора мыши по координате x
+    /* Считываем позицию курсора мыши по координате x */
     const [cursorPositionX, setCursorPositionX] = useState(0)
 
     /**
@@ -42,23 +43,25 @@ export const Range: FC<RangeProps> = memo((props) => {
      */
     const [rangeZones, setRangeZones] = useState<TRangeZones>({})
 
+    /* Значение thumb */
     const [value, setValue] = useState<number>(values[0])
 
+    /* Функция рассчитывает позицию thumb */
     const changeThumbPosition = useCallback(
         ({ clientX }: MouseEvent) => {
-            // Позиция thumb высчитывается, как разница координаты курсора мыши по X
-            // и координата начала контейнера range.
+            /* Позиция thumb высчитывается, как разница координаты курсора мыши по X 
+            и координата начала контейнера range. */
             const cursorPosition = clientX
 
-            // Высчитываем начало позици range контейнера
+            /* Высчитываем начало позици range контейнера */
             const rangeContainerPositionStart = rangeContainerStartPosition!
 
-            //Высчитываем конец позиции range контейнера
+            /* Высчитываем конец позиции range контейнера */
             const rangeContainerPositionEnd =
                 rangeContainerPositionStart + rangeContainerRef.current!.clientWidth
 
-            // Если курсор выходит за границы range контейнера - перестаем
-            // двигать thumb
+            /* Если курсор выходит за границы range контейнера - перестаем
+             двигать thumb */
             if (cursorPosition < rangeContainerPositionStart) return
             if (cursorPosition > rangeContainerPositionEnd) return
 
@@ -72,41 +75,29 @@ export const Range: FC<RangeProps> = memo((props) => {
         changeThumbPosition(e)
     }
 
-    /**
-     * Удаление обработчика события с thumb
-     */
+    /* Удаление обработчика события с thumb */
     const removeEventListenerFromThumb = () => {
         thumbRef.current?.removeEventListener('mousemove', changeThumbPosition)
         setIsMoveThumb(false)
     }
 
-    /**
-     * Вешает обработчик события на thumb при нажатии на него
-     */
+    /* Вешает обработчик события на thumb при нажатии на него */
     const onMouseDown = () => {
         thumbRef.current?.addEventListener('mousemove', changeThumbPosition)
         setIsMoveThumb(true)
     }
 
-    /**
-     * Удаляет обработчик события с thumb, если левая
-     * кнопка мыши будет отпущена
-     */
+    /* Удаляет обработчик события с thumb, если левая кнопка мыши будет отпущена */
     const onMouseUp = () => {
         removeEventListenerFromThumb()
     }
 
-    /**
-     * Удаляет обработчик события с thumb, если курсор выходит
-     * за его границы
-     */
+    /* Удаляет обработчик события с thumb, если курсор выходит за его границы */
     const onMouseOut = () => {
         removeEventListenerFromThumb()
     }
 
-    /**
-     * Функция высчитывает площадь зон значений в пикселях.
-     */
+    /* Функция высчитывает площадь зон значений в пикселях. */
     const calculateRangeZones = useCallback(
         (rangeContainerWidth: number) => {
             const amountValues = values.length
@@ -140,10 +131,13 @@ export const Range: FC<RangeProps> = memo((props) => {
         calculateRangeZones(rangeContainer!.clientWidth)
     }, [calculateRangeZones])
 
-    /**
-     * Функция считает значение относительно положения
-     * thumb
-     */
+    /* Установка первоначального состояния в store */
+    useEffect(() => {
+        if (!values) return
+        onChange(values[0])
+    }, [values, onChange])
+
+    /* Функция считает значение относительно положения thumb */
     const calculateThumbValues = () => {
         const a = Object.entries(rangeZones)
         for (let i = 0; i < a.length; i++) {

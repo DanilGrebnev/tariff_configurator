@@ -1,0 +1,59 @@
+{
+    "data": {
+        "operators": [
+            "Megafon",
+            "MTS",
+            "Biline"
+        ],
+        "minutes": [
+            {
+                "value": 200,
+                "price": 50
+            },
+            {
+                "value": 250,
+                "price": 80
+            },
+            {
+                "value": 600,
+                "price": 100
+            },
+            {
+                "value": 650,
+                "price": 120
+            }
+        ],
+        "gigabytes": [
+            {
+                "value": 5,
+                "price": 50
+            },
+            {
+                "value": 15,
+                "price": 80
+            },
+            {
+                "value": 30,
+                "price": 100
+            },
+            {
+                "value": 35,
+                "price": 120
+            }
+        ],
+        "router": [
+            {
+                "name": "wi-fi",
+                "value": "rent",
+                "signature": "Аренда 99 ₽/мес.",
+                "defaultChecked": false
+            },
+            {
+                "name": "wi-fi",
+                "value": "purchase",
+                "signature": "Выкупить 2600 ₽/мес.",
+                "defaultChecked": true
+            }
+        ]
+    }
+}

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState, useRef, useLayoutEffect } from 'react'
 import { Radio } from 'shared/components/Radio'
 
 import VkIcon from 'shared/assets/icons/vk_icon.svg?react'
@@ -14,28 +14,29 @@ interface ISocialNetworkProps {
 }
 
 export const SocialNetwork: FC<ISocialNetworkProps> = () => {
+    const [inputsCollection, setInputs] = useState<HTMLFormControlsCollection | []>([])
+
+    const formRef = useRef<HTMLFormElement>(null)
+
+    useLayoutEffect(() => {
+        setInputs(formRef.current?.elements || [])
+    }, [])
+
+    const onChange = () => {
+        console.log(inputsCollection)
+    }
+
     return (
-        <div className={s.SocialNetwork}>
-            <Radio
-                onChange={(value) => console.log(value)}
-                icon={<FacebookIcon />}
-            />
-            <Radio
-                onChange={(value) => console.log(value)}
-                icon={<VkIcon />}
-            />
-            <Radio
-                onChange={(value) => console.log(value)}
-                icon={<OdnoclassIcon />}
-            />
-            <Radio
-                onChange={(value) => console.log(value)}
-                icon={<InstagramIcon />}
-            />
-            <Radio
-                onChange={(value) => console.log(value)}
-                icon={<TikTokIcon />}
-            />
-        </div>
+        <form
+            ref={formRef}
+            onChange={onChange}
+            className={s.SocialNetwork}
+        >
+            <Radio icon={<FacebookIcon />} />
+            <Radio icon={<VkIcon />} />
+            <Radio icon={<OdnoclassIcon />} />
+            <Radio icon={<InstagramIcon />} />
+            <Radio icon={<TikTokIcon />} />
+        </form>
     )
 }
