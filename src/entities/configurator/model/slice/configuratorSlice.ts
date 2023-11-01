@@ -7,8 +7,10 @@ const initialState: IConfiguratorSchema = {
     operator: '',
     minutes: 0,
     gigabytes: 0,
-    socialMedia: '',
     router: '',
+    socialNetwork: [],
+    loading: true,
+    resultPrice: 0,
     data: null,
 }
 
@@ -31,13 +33,21 @@ const configuratorSlice = createSlice({
         setGigabytes(state, action: PayloadAction<number>) {
             state.gigabytes = action.payload
         },
+        setSocialNetwork(state, action) {
+            state.socialNetwork = action.payload
+        },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchConfiguratorData.pending, (state) => {})
-            .addCase(fetchConfiguratorData.rejected, (state) => {})
             .addCase(fetchConfiguratorData.fulfilled, (state, action) => {
                 state.data = action.payload
+                state.loading = false
+            })
+            .addCase(fetchConfiguratorData.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(fetchConfiguratorData.rejected, (state) => {
+                state.loading = false
             })
     },
 })

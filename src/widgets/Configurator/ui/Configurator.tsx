@@ -1,9 +1,10 @@
-import { FC, useCallback, useEffect } from 'react'
-import { Title } from 'shared/components/Title'
-import { CheckBoxContainer } from './components/CheckBoxContainer/CheckBoxContainer'
-import { SocialNetwork } from './components/SocialNetwork/SocialNetwork'
+import { FC, useEffect, memo } from 'react'
 import { useAppDispatch } from '@/app/providers/storeProvider'
 import { fetchConfiguratorData } from '@/entities/configurator'
+import { Title } from 'shared/components/Title'
+
+import { CheckBoxContainer } from './components/CheckBoxContainer/CheckBoxContainer'
+import { SocialNetwork } from './components/SocialNetwork/SocialNetwork'
 import { RangeMinutes } from './components/RangeMinutes/RangeMinutes'
 import { Button } from './components/Button/Button'
 import { RangeGigabytes } from './components/RangeGigabytes/RangeGigabytes'
@@ -12,11 +13,7 @@ import { PhoneInput } from './components/PhoneInput/PhoneInput'
 
 import s from './Configurator.module.scss'
 
-interface IConfiguratorProps {
-    className?: string
-}
-
-export const Configurator: FC<IConfiguratorProps> = () => {
+export const Configurator: FC = memo(() => {
     const dispatch = useAppDispatch()
 
     const fetchData = () => {
@@ -43,4 +40,6 @@ export const Configurator: FC<IConfiguratorProps> = () => {
             <Button />
         </section>
     )
-}
+})
+
+Configurator.displayName = 'Configurator'

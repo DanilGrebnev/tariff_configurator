@@ -1,10 +1,6 @@
 {
     "data": {
-        "operators": [
-            "Megafon",
-            "MTS",
-            "Biline"
-        ],
+        "operators": ["Megafon", "MTS", "Biline"],
         "minutes": [
             {
                 "value": 200,
@@ -46,13 +42,42 @@
                 "name": "wi-fi",
                 "value": "rent",
                 "signature": "Аренда 99 ₽/мес.",
-                "defaultChecked": false
+                "defaultChecked": false,
+                "price": 99
             },
             {
                 "name": "wi-fi",
                 "value": "purchase",
-                "signature": "Выкупить 2600 ₽/мес.",
-                "defaultChecked": true
+                "signature": "Выкупить 2600",
+                "defaultChecked": true,
+                "price": 2600
+            }
+        ],
+        "socialNetwork": [
+            {
+                "name": "facebook",
+                "price": "20",
+                "icon": "../src/shared/assets/icons/facebook_icon.svg"
+            },
+            {
+                "name": "vk",
+                "price": "20",
+                "icon": "../src/shared/assets/icons/vk_icon.svg"
+            },
+            {
+                "name": "odnoklassniki",
+                "price": "20",
+                "icon": "../src/shared/assets/icons/odnoklass_icon.svg"
+            },
+            {
+                "name": "instagram",
+                "price": "20",
+                "icon": "../src/shared/assets/icons/inst_icon.svg"
+            },
+            {
+                "name": "tik-tok",
+                "price": "20",
+                "icon": "../src/shared/assets/icons/tiktok_icon.svg"
             }
         ]
     }

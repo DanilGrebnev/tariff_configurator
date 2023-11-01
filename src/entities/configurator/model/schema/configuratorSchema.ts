@@ -1,11 +1,21 @@
-type TRangeData = { value: number; price: number }[]
-type TCheckboxData = { name: string; value: string; signature: string; defaultChecked?: boolean }
+export type TRangeData = { value: number; price: number }[]
+
+type TCheckboxData = {
+    name: string
+    value: 'purchase' | 'rent'
+    signature: string
+    defaultChecked?: boolean
+    price: number
+}
+
+type TSocialNetwork = { name: string; price: number; icon: string }
 
 interface IData {
     operators: string[]
     minutes: TRangeData
     gigabytes: TRangeData
     router: TCheckboxData[]
+    socialNetwork: TSocialNetwork[]
 }
 
 export interface IConfiguratorSchema {
@@ -13,7 +23,9 @@ export interface IConfiguratorSchema {
     operator: string
     minutes: number
     gigabytes: number
-    socialMedia: string
     router: string
+    socialNetwork: Omit<TSocialNetwork, 'icon'>[] | []
+    loading: boolean
+    resultPrice: number
     data: IData | null
 }

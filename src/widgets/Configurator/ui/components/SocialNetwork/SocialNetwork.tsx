@@ -1,29 +1,34 @@
 import { FC, useState, useRef, useLayoutEffect } from 'react'
 import { Radio } from 'shared/components/Radio'
-
-import VkIcon from 'shared/assets/icons/vk_icon.svg?react'
-import OdnoclassIcon from 'shared/assets/icons/odnoklass_icon.svg?react'
-import FacebookIcon from 'shared/assets/icons/facebook_icon.svg?react'
-import InstagramIcon from 'shared/assets/icons/inst_icon.svg?react'
-import TikTokIcon from 'shared/assets/icons/tiktok_icon.svg?react'
+import { useAppDispatch, useAppSelector } from '@/app/providers/storeProvider'
+import { ConfiguratorSelectors } from '@/entities/configurator'
+import { configuratorActions } from '@/entities/configurator'
+import { v4 } from 'uuid'
 
 import s from './SocialNetwork.module.scss'
 
-interface ISocialNetworkProps {
-    className?: string
-}
-
-export const SocialNetwork: FC<ISocialNetworkProps> = () => {
-    const [inputsCollection, setInputs] = useState<HTMLFormControlsCollection | []>([])
-
+export const SocialNetwork: FC = () => {
     const formRef = useRef<HTMLFormElement>(null)
+
+    const data = useAppSelector(ConfiguratorSelectors.getData)
+    const dispatch = useAppDispatch()
+    const [inputsCollection, setInputs] = useState<HTMLFormControlsCollection | []>([])
 
     useLayoutEffect(() => {
         setInputs(formRef.current?.elements || [])
     }, [])
 
     const onChange = () => {
-        console.log(inputsCollection)
+        const result: { price: number; name: string }[] = []
+        const a = [...inputsCollection] as HTMLInputElement[]
+
+        a.forEach((input) => {
+            if (input.checked) {
+                result.push({ price: +input.value, name: input.name })
+            }
+        })
+
+        dispatch(configuratorActions.setSocialNetwork(result))
     }
 
     return (
@@ -32,11 +37,16 @@ export const SocialNetwork: FC<ISocialNetworkProps> = () => {
             onChange={onChange}
             className={s.SocialNetwork}
         >
-            <Radio icon={<FacebookIcon />} />
-            <Radio icon={<VkIcon />} />
-            <Radio icon={<OdnoclassIcon />} />
-            <Radio icon={<InstagramIcon />} />
-            <Radio icon={<TikTokIcon />} />
+            {data?.socialNetwork.map((props) => {
+                return (
+                    <Radio
+                        key={v4()}
+                        srcIcon={props.icon}
+                        name={props.name}
+                        value={props.price}
+                    />
+                )
+            })}
         </form>
     )
 }

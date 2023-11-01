@@ -7,11 +7,12 @@ interface IRadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onCha
     className?: string
     icon?: ReactNode
     srcIcon?: string
+    value: number
     onChange?: (checked: boolean) => void
 }
 
 export const Radio: FC<IRadioProps> = memo((props) => {
-    const { icon, srcIcon, checked, onChange, ...otherProps } = props
+    const { icon, value, srcIcon, checked, onChange, ...otherProps } = props
     const [isChecked, setIsChecked] = useState(checked || false)
 
     const toggleChecked = () => {
@@ -22,7 +23,6 @@ export const Radio: FC<IRadioProps> = memo((props) => {
         if (!onChange) return
         onChange(isChecked)
         onChange(true)
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isChecked])
 
@@ -32,10 +32,11 @@ export const Radio: FC<IRadioProps> = memo((props) => {
                 type="checkbox"
                 checked={isChecked}
                 onChange={toggleChecked}
+                value={value}
                 {...otherProps}
             />
             <div className={s['radio-icon']}>{icon || <img src={srcIcon} />}</div>
-            <p>20 ₽</p>
+            <p>{value} ₽</p>
         </label>
     )
 })
