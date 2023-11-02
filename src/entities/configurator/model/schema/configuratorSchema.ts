@@ -20,6 +20,7 @@ interface IData {
 
 export interface IConfiguratorSchema {
     phone: string
+    phoneError: boolean
     operator: string
     minutes: number
     gigabytes: number

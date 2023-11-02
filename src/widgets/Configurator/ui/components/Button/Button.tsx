@@ -1,7 +1,8 @@
 import { FC, ButtonHTMLAttributes, useEffect, useState, useMemo, useCallback } from 'react'
 import { Button as ButtonCmp } from '@/shared/components/Button/Button'
 import { useAppSelector } from '@/app/providers/storeProvider'
-import { ConfiguratorSelectors } from '@/entities/configurator'
+import { ConfiguratorSelectors, configuratorActions } from '@/entities/configurator'
+import { useAppDispatch } from '@/app/providers/storeProvider'
 
 import cn from 'classnames'
 import s from './Button.module.scss'
@@ -12,10 +13,15 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button: FC<IButtonProps> = (props) => {
     const { className, ...otherProps } = props
-    const [state, setState] = useState<number>(0)
+    const [error, setError] = useState(false)
+
+    const dispatch = useAppDispatch()
+
+    const [totalPice, setTotalPrice] = useState<number>(0)
 
     const data = useAppSelector(ConfiguratorSelectors.getData)
     const calculatedValue = useAppSelector(ConfiguratorSelectors.getCalculateValues)
+    const phoneNumber = useAppSelector(ConfiguratorSelectors.getPhone)
 
     /* Расчёт стоимости range */
     const calculateRangeValue = useCallback(
@@ -54,6 +60,20 @@ export const Button: FC<IButtonProps> = (props) => {
 
     const { gigabytes, minutes, router } = calculatedValue
 
+    const checkPhoneInputValue = () => {
+        if (+phoneNumber.length < 12) {
+            dispatch(configuratorActions.setPhoneError(true))
+            setError(true)
+        } else {
+            setError(false)
+            dispatch(configuratorActions.setPhoneError(false))
+        }
+    }
+
+    useEffect(() => {
+        checkPhoneInputValue()
+    }, [phoneNumber])
+
     const gygabyteTotalPrice = useMemo(
         () => calculateRangeValue(gigabytes, 'gigabytes'),
         [gigabytes, calculateRangeValue]
@@ -76,10 +96,11 @@ export const Button: FC<IButtonProps> = (props) => {
     const calculateFinalPrice = () => {
         const totalPrice =
             gygabyteTotalPrice + minuteTotalPrice + routerTotalPrice + socialNetworkTotalPrice
-        setState(totalPrice)
+        setTotalPrice(totalPrice)
     }
 
     const fetchData = () => {
+        if (error) return
         alert(JSON.stringify(calculatedValue))
     }
 
@@ -93,7 +114,7 @@ export const Button: FC<IButtonProps> = (props) => {
             {...otherProps}
             className={cn(s.Button, className)}
         >
-            <span>{state} ₽</span> в месяц
+            <span>{totalPice} ₽</span> в месяц
         </ButtonCmp>
     )
 }

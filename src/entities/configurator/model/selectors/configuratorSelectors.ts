@@ -17,8 +17,16 @@ export class ConfiguratorSelectors {
     }
 
     static getCalculateValues(state: IStateSchema) {
-        const { data, loading, resultPrice, ...otherValues } = state.configuratorState
+        const { data, loading, resultPrice, phoneError, ...otherValues } = state.configuratorState
 
         return otherValues
+    }
+
+    static getPhone(state: IStateSchema) {
+        return state.configuratorState.phone
+    }
+
+    static getPhoneError(state: IStateSchema) {
+        return state.configuratorState.phoneError
     }
 }

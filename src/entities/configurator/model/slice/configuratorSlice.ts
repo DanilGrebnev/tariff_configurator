@@ -1,9 +1,11 @@
 import { IConfiguratorSchema } from './../schema/configuratorSchema'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { fetchConfiguratorData } from '../services/fetchConfiguratorData'
+import { filterPhoneNumber } from '@/shared/lib/filterPhoneNumber'
 
 const initialState: IConfiguratorSchema = {
     phone: '',
+    phoneError: false,
     operator: '',
     minutes: 0,
     gigabytes: 0,
@@ -19,7 +21,9 @@ const configuratorSlice = createSlice({
     initialState,
     reducers: {
         setPhone(state, action: PayloadAction<string>) {
-            state.phone = action.payload
+            const phone = filterPhoneNumber(action.payload)
+
+            state.phone = phone
         },
         setRouter(state, action: PayloadAction<string>) {
             state.router = action.payload
@@ -35,6 +39,9 @@ const configuratorSlice = createSlice({
         },
         setSocialNetwork(state, action) {
             state.socialNetwork = action.payload
+        },
+        setPhoneError(state, action) {
+            state.phoneError = action.payload
         },
     },
     extraReducers: (builder) => {

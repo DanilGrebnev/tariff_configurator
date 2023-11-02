@@ -1,13 +1,13 @@
-import { useCallback, useState, memo } from 'react'
+import { useCallback, memo } from 'react'
 import { useAppDispatch } from '@/app/providers/storeProvider'
 import { ConfiguratorSelectors, configuratorActions } from '@/entities/configurator'
 import { useAppSelector } from '@/app/providers/storeProvider'
 import { Input } from '@/shared/components/Input'
-import InputMask from 'react-input-mask'
 
 export const PhoneInput = memo(() => {
-    const [error, setIsError] = useState<boolean>(false)
     const phoneValue = useAppSelector(ConfiguratorSelectors.getPhoneData)
+    const phoneError = useAppSelector(ConfiguratorSelectors.getPhoneError)
+
     const dispatch = useAppDispatch()
 
     const changeInputValue = useCallback(
@@ -19,17 +19,13 @@ export const PhoneInput = memo(() => {
 
     return (
         <>
-            <InputMask
-                mask={'+7(000)-000-00-00'}
-                value={'+79376975901'}
-            />
             <Input
                 value={phoneValue}
-                type="number"
-                isError={error}
+                isError={phoneError}
                 inputTitle="Телефон"
                 placeholder="+7 (___) ___-__-__"
                 signature="Обязательное поле"
+                mask="+7 \(999\)\-999\-99\-99"
                 onChange={changeInputValue}
             />
         </>
