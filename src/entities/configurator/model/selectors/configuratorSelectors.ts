@@ -8,12 +8,16 @@ export class ConfiguratorSelectors {
         return state.configuratorState.data
     }
 
+    static getPhoneData(state: IStateSchema) {
+        return state.configuratorState.phone
+    }
+
     static getIsLoading(state: IStateSchema) {
         return state.configuratorState.loading
     }
 
     static getCalculateValues(state: IStateSchema) {
-        const { data, loading, phone, resultPrice, ...otherValues } = state.configuratorState
+        const { data, loading, resultPrice, ...otherValues } = state.configuratorState
 
         return otherValues
     }

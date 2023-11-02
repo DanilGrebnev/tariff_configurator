@@ -10,8 +10,6 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
 }
 
-type TCalculatedValue = ReturnType<typeof ConfiguratorSelectors.getCalculateValues>
-
 export const Button: FC<IButtonProps> = (props) => {
     const { className, ...otherProps } = props
     const [state, setState] = useState<number>(0)
@@ -81,12 +79,17 @@ export const Button: FC<IButtonProps> = (props) => {
         setState(totalPrice)
     }
 
+    const fetchData = () => {
+        alert(JSON.stringify(calculatedValue))
+    }
+
     useEffect(() => {
         calculateFinalPrice()
     }, [calculatedValue])
 
     return (
         <ButtonCmp
+            onClick={fetchData}
             {...otherProps}
             className={cn(s.Button, className)}
         >
