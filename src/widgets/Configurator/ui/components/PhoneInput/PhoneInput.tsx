@@ -5,10 +5,9 @@ import { useAppSelector } from '@/app/providers/storeProvider'
 import { Input } from '@/shared/components/Input'
 
 export const PhoneInput = memo(() => {
+    const dispatch = useAppDispatch()
     const phoneValue = useAppSelector(ConfiguratorSelectors.getPhoneData)
     const phoneError = useAppSelector(ConfiguratorSelectors.getPhoneError)
-
-    const dispatch = useAppDispatch()
 
     const changeInputValue = useCallback(
         (value: string) => {

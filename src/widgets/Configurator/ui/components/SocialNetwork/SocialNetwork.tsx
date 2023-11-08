@@ -5,6 +5,14 @@ import { ConfiguratorSelectors } from '@/entities/configurator'
 import { configuratorActions } from '@/entities/configurator'
 import { v4 } from 'uuid'
 
+import Facebook from '@/shared/assets/icons/facebook_icon.svg?react'
+import VK from '@/shared/assets/icons/vk_icon.svg?react'
+import Inst from '@/shared/assets/icons/inst_icon.svg?react'
+import TikTok from '@/shared/assets/icons/tiktok_icon.svg?react'
+import Odnoklass from '@/shared/assets/icons/odnoklass_icon.svg?react'
+
+const Icons = [Facebook, VK, Odnoklass, Inst, TikTok]
+
 import s from './SocialNetwork.module.scss'
 
 export const SocialNetwork: FC = () => {
@@ -37,11 +45,12 @@ export const SocialNetwork: FC = () => {
             onChange={onChange}
             className={s.SocialNetwork}
         >
-            {data?.socialNetwork.map((props) => {
+            {data?.socialNetwork.map((props, i) => {
+                const Icon = Icons[i]
                 return (
                     <Radio
                         key={v4()}
-                        srcIcon={props.icon}
+                        icon={<Icon />}
                         name={props.name}
                         value={props.price}
                     />

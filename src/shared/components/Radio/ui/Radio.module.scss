@@ -32,4 +32,13 @@ $bottom-radius: 15px;
 .radio-icon {
     max-width: 60px;
     max-height: 60px;
+
+    &:not(.checked) {
+        svg {
+            fill: silver;
+        }
+        path: {
+            fill: silver;
+        }
+    }
 }

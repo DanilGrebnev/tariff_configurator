@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IStateSchema } from '@/app/providers/storeProvider/model/StateSchema'
 
-export const getConfiguratorData = (state: IStateSchema) => state.configuratorState.data
+// export const getConfiguratorData = (state: IStateSchema) => state.configuratorState.data
 
 export class ConfiguratorSelectors {
     static getData(state: IStateSchema) {

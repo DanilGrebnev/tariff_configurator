@@ -1,8 +1,8 @@
 import { FC, ButtonHTMLAttributes, useEffect, useState, useMemo, useCallback } from 'react'
 import { Button as ButtonCmp } from '@/shared/components/Button/Button'
 import { useAppSelector } from '@/app/providers/storeProvider'
-import { ConfiguratorSelectors, configuratorActions } from '@/entities/configurator'
-import { useAppDispatch } from '@/app/providers/storeProvider'
+import { ConfiguratorSelectors } from '@/entities/configurator'
+import { useCheckPhoneError } from '@/shared/hooks/useCheckPhoneError'
 
 import cn from 'classnames'
 import s from './Button.module.scss'
@@ -15,13 +15,12 @@ export const Button: FC<IButtonProps> = (props) => {
     const { className, ...otherProps } = props
     const [error, setError] = useState(false)
 
-    const dispatch = useAppDispatch()
+    useCheckPhoneError({ setError })
 
     const [totalPice, setTotalPrice] = useState<number>(0)
 
     const data = useAppSelector(ConfiguratorSelectors.getData)
     const calculatedValue = useAppSelector(ConfiguratorSelectors.getCalculateValues)
-    const phoneNumber = useAppSelector(ConfiguratorSelectors.getPhone)
 
     /* Расчёт стоимости range */
     const calculateRangeValue = useCallback(
@@ -60,20 +59,6 @@ export const Button: FC<IButtonProps> = (props) => {
 
     const { gigabytes, minutes, router } = calculatedValue
 
-    const checkPhoneInputValue = () => {
-        if (+phoneNumber.length < 12) {
-            dispatch(configuratorActions.setPhoneError(true))
-            setError(true)
-        } else {
-            setError(false)
-            dispatch(configuratorActions.setPhoneError(false))
-        }
-    }
-
-    useEffect(() => {
-        checkPhoneInputValue()
-    }, [phoneNumber])
-
     const gygabyteTotalPrice = useMemo(
         () => calculateRangeValue(gigabytes, 'gigabytes'),
         [gigabytes, calculateRangeValue]
@@ -106,6 +91,7 @@ export const Button: FC<IButtonProps> = (props) => {
 
     useEffect(() => {
         calculateFinalPrice()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [calculatedValue])
 
     return (

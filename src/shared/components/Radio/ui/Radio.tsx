@@ -35,7 +35,9 @@ export const Radio: FC<IRadioProps> = memo((props) => {
                 value={value}
                 {...otherProps}
             />
-            <div className={s['radio-icon']}>{icon || <img src={srcIcon} />}</div>
+            <div className={cn(s['radio-icon'], { [s.checked]: isChecked })}>
+                {icon || <img src={srcIcon} />}
+            </div>
             <p>{value} ₽</p>
         </label>
     )

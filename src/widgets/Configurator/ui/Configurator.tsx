@@ -2,7 +2,6 @@ import { FC, useEffect, memo } from 'react'
 import { useAppDispatch } from '@/app/providers/storeProvider'
 import { fetchConfiguratorData } from '@/entities/configurator'
 import { Title } from 'shared/components/Title'
-
 import { CheckBoxContainer } from './components/CheckBoxContainer/CheckBoxContainer'
 import { SocialNetwork } from './components/SocialNetwork/SocialNetwork'
 import { RangeMinutes } from './components/RangeMinutes/RangeMinutes'

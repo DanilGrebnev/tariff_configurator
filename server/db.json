@@ -1,6 +1,10 @@
 {
     "data": {
-        "operators": ["Megafon", "MTS", "Biline"],
+        "operators": [
+            "Megafon",
+            "MTS",
+            "Biline"
+        ],
         "minutes": [
             {
                 "value": 200,
@@ -72,7 +76,7 @@
             {
                 "name": "instagram",
                 "price": "20",
-                "icon": "../src/shared/assets/icons/inst_icon.svg"
+                "icon": "../src/shared/assets/icons/inst_icon.svg?react"
             },
             {
                 "name": "tik-tok",
