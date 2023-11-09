@@ -1,7 +1,7 @@
-import { FC, ButtonHTMLAttributes, useEffect, useState, useMemo, useCallback } from 'react'
+import { FC, ButtonHTMLAttributes, useEffect, useState, useMemo, useCallback, memo } from 'react'
 import { Button as ButtonCmp } from '@/shared/components/Button/Button'
-import { useAppSelector } from '@/app/providers/storeProvider'
-import { ConfiguratorSelectors } from '@/entities/configurator'
+import { useAppSelector, useAppDispatch } from '@/app/providers/storeProvider'
+import { ConfiguratorSelectors, configuratorActions } from '@/entities/configurator'
 import { useCheckPhoneError } from '@/shared/hooks/useCheckPhoneError'
 
 import cn from 'classnames'
@@ -11,13 +11,14 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
 }
 
-export const Button: FC<IButtonProps> = (props) => {
+export const Button: FC<IButtonProps> = memo((props) => {
     const { className, ...otherProps } = props
+    const dispatch = useAppDispatch()
+
+    const resultPrice = useAppSelector(ConfiguratorSelectors.getResultPrice)
     const [error, setError] = useState(false)
 
     useCheckPhoneError({ setError })
-
-    const [totalPice, setTotalPrice] = useState<number>(0)
 
     const data = useAppSelector(ConfiguratorSelectors.getData)
     const calculatedValue = useAppSelector(ConfiguratorSelectors.getCalculateValues)
@@ -81,12 +82,12 @@ export const Button: FC<IButtonProps> = (props) => {
     const calculateFinalPrice = () => {
         const totalPrice =
             gygabyteTotalPrice + minuteTotalPrice + routerTotalPrice + socialNetworkTotalPrice
-        setTotalPrice(totalPrice)
+        dispatch(configuratorActions.setResultPrice(totalPrice))
     }
 
-    const fetchData = () => {
+    const postData = () => {
         if (error) return
-        alert(JSON.stringify(calculatedValue))
+        alert(JSON.stringify({ ...calculatedValue, resultPrice }))
     }
 
     useEffect(() => {
@@ -96,11 +97,11 @@ export const Button: FC<IButtonProps> = (props) => {
 
     return (
         <ButtonCmp
-            onClick={fetchData}
+            onClick={postData}
             {...otherProps}
             className={cn(s.Button, className)}
         >
-            <span>{totalPice} ₽</span> в месяц
+            <span>{resultPrice} ₽</span> в месяц
         </ButtonCmp>
     )
-}
+})

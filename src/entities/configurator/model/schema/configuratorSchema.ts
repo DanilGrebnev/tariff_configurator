@@ -8,7 +8,13 @@ type TCheckboxData = {
     price: number
 }
 
-type TSocialNetwork = { name: string; price: number; icon: string }
+type TSocialNetwork = {
+    name: string
+    price: number
+    icon: string
+    iconNotChecked: string
+    checked?: boolean
+}
 
 interface IData {
     operators: string[]

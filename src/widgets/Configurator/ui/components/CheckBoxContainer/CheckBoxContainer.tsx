@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { FC, useCallback, memo } from 'react'
 import { CheckBox } from 'shared/components/CheckBox'
 import { Title } from 'shared/components/Title'
 import { ConfiguratorSelectors, configuratorActions } from '@/entities/configurator'
@@ -14,7 +14,7 @@ interface ICheckBoxContainerProps {
     signature?: string
 }
 
-export const CheckBoxContainer: FC<ICheckBoxContainerProps> = () => {
+export const CheckBoxContainer: FC<ICheckBoxContainerProps> = memo(() => {
     const data = useAppSelector(ConfiguratorSelectors.getData)
 
     const dispatch = useAppDispatch()
@@ -42,4 +42,4 @@ export const CheckBoxContainer: FC<ICheckBoxContainerProps> = () => {
             })}
         </div>
     )
-}
+})

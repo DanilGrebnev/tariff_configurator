@@ -1,13 +1,9 @@
-import { FC, useCallback } from 'react'
+import { useCallback, memo } from 'react'
 import { Select } from '@/shared/components/Select'
 import { useAppDispatch, useAppSelector } from '@/app/providers/storeProvider'
 import { ConfiguratorSelectors, configuratorActions } from '@/entities/configurator'
 
-interface ISelectOperatorProps {
-    className?: string
-}
-
-export const SelectOperator: FC<ISelectOperatorProps> = () => {
+export const SelectOperator = memo(() => {
     const data = useAppSelector(ConfiguratorSelectors.getData)
 
     const dispatch = useAppDispatch()
@@ -26,4 +22,4 @@ export const SelectOperator: FC<ISelectOperatorProps> = () => {
             onChange={changeOperatorValue}
         />
     )
-}
+})

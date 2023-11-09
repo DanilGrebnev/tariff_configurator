@@ -1,10 +1,6 @@
 {
     "data": {
-        "operators": [
-            "Megafon",
-            "MTS",
-            "Biline"
-        ],
+        "operators": ["Megafon", "MTS", "Biline"],
         "minutes": [
             {
                 "value": 200,
@@ -61,27 +57,34 @@
             {
                 "name": "facebook",
                 "price": "20",
-                "icon": "../src/shared/assets/icons/facebook_icon.svg"
+                "icon": "../src/shared/assets/icons/facebook_icon.svg",
+                "iconNotChecked": "../src/shared/assets/icons/facebook-not-select-icon.svg"
             },
             {
                 "name": "vk",
                 "price": "20",
-                "icon": "../src/shared/assets/icons/vk_icon.svg"
+                "icon": "../src/shared/assets/icons/vk_icon.svg",
+                "iconNotChecked": "../src/shared/assets/icons/vk-not-select-icon.svg",
+                "checked": true
             },
             {
                 "name": "odnoklassniki",
                 "price": "20",
-                "icon": "../src/shared/assets/icons/odnoklass_icon.svg"
+                "icon": "../src/shared/assets/icons/odnoklass_icon.svg",
+                "iconNotChecked": "../src/shared/assets/icons/odnoklassniki-not-select-icon.svg"
             },
             {
                 "name": "instagram",
                 "price": "20",
-                "icon": "../src/shared/assets/icons/inst_icon.svg?react"
+                "icon": "../src/shared/assets/icons/inst_icon.svg",
+                "iconNotChecked": "../src/shared/assets/icons/instagram-not-select-icon.svg",
+                "checked": true
             },
             {
                 "name": "tik-tok",
                 "price": "20",
-                "icon": "../src/shared/assets/icons/tiktok_icon.svg"
+                "icon": "../src/shared/assets/icons/tiktok_icon.svg",
+                "iconNotChecked": "../src/shared/assets/icons/tiktok-not-select-icon.svg"
             }
         ]
     }

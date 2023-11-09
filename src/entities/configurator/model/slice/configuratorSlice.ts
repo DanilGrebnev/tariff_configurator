@@ -43,6 +43,9 @@ const configuratorSlice = createSlice({
         setPhoneError(state, action) {
             state.phoneError = action.payload
         },
+        setResultPrice(state, action: PayloadAction<number>) {
+            state.resultPrice = action.payload
+        },
     },
     extraReducers: (builder) => {
         builder

@@ -1,9 +1,9 @@
-import { FC, useCallback } from 'react'
+import { useCallback, memo } from 'react'
 import { Range } from '@/shared/components/Range'
 import { useAppDispatch, useAppSelector } from '@/app/providers/storeProvider'
 import { ConfiguratorSelectors, configuratorActions } from '@/entities/configurator'
 
-export const RangeGigabytes: FC = () => {
+export const RangeGigabytes = memo(() => {
     const data = useAppSelector(ConfiguratorSelectors.getData)
     const dispatch = useAppDispatch()
 
@@ -25,4 +25,4 @@ export const RangeGigabytes: FC = () => {
             values={values}
         />
     )
-}
+})

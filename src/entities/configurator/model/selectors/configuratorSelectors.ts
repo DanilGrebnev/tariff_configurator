@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IStateSchema } from '@/app/providers/storeProvider/model/StateSchema'
 
-// export const getConfiguratorData = (state: IStateSchema) => state.configuratorState.data
-
 export class ConfiguratorSelectors {
     static getData(state: IStateSchema) {
         return state.configuratorState.data
+    }
+
+    static getSocialNetworkFromData(state: IStateSchema) {
+        return state.configuratorState.data?.socialNetwork
     }
 
     static getPhoneData(state: IStateSchema) {
@@ -28,5 +30,9 @@ export class ConfiguratorSelectors {
 
     static getPhoneError(state: IStateSchema) {
         return state.configuratorState.phoneError
+    }
+
+    static getResultPrice(state: IStateSchema) {
+        return state.configuratorState.resultPrice
     }
 }

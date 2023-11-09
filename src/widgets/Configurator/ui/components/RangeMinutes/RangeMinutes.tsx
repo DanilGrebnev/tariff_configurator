@@ -1,9 +1,9 @@
-import { FC, useCallback } from 'react'
+import { useCallback, memo } from 'react'
 import { Range } from '@/shared/components/Range'
 import { useAppDispatch, useAppSelector } from '@/app/providers/storeProvider'
 import { ConfiguratorSelectors, configuratorActions } from '@/entities/configurator'
 
-export const RangeMinutes: FC = () => {
+export const RangeMinutes = memo(() => {
     const data = useAppSelector(ConfiguratorSelectors.getData)
 
     const values = data?.minutes.map((item) => item.value) || []
@@ -24,4 +24,4 @@ export const RangeMinutes: FC = () => {
             values={values}
         />
     )
-}
+})

@@ -1,24 +1,16 @@
-import { FC, useState, useRef, useLayoutEffect } from 'react'
+import { useState, useRef, useLayoutEffect, memo, useEffect } from 'react'
 import { Radio } from 'shared/components/Radio'
 import { useAppDispatch, useAppSelector } from '@/app/providers/storeProvider'
 import { ConfiguratorSelectors } from '@/entities/configurator'
 import { configuratorActions } from '@/entities/configurator'
 import { v4 } from 'uuid'
 
-import Facebook from '@/shared/assets/icons/facebook_icon.svg?react'
-import VK from '@/shared/assets/icons/vk_icon.svg?react'
-import Inst from '@/shared/assets/icons/inst_icon.svg?react'
-import TikTok from '@/shared/assets/icons/tiktok_icon.svg?react'
-import Odnoklass from '@/shared/assets/icons/odnoklass_icon.svg?react'
-
-const Icons = [Facebook, VK, Odnoklass, Inst, TikTok]
-
 import s from './SocialNetwork.module.scss'
 
-export const SocialNetwork: FC = () => {
+export const SocialNetwork = memo(() => {
     const formRef = useRef<HTMLFormElement>(null)
 
-    const data = useAppSelector(ConfiguratorSelectors.getData)
+    const socialNetwork = useAppSelector(ConfiguratorSelectors.getSocialNetworkFromData)
     const dispatch = useAppDispatch()
     const [inputsCollection, setInputs] = useState<HTMLFormControlsCollection | []>([])
 
@@ -27,17 +19,31 @@ export const SocialNetwork: FC = () => {
     }, [])
 
     const onChange = () => {
-        const result: { price: number; name: string }[] = []
-        const a = [...inputsCollection] as HTMLInputElement[]
+        const inputs = [...inputsCollection] as HTMLInputElement[]
 
-        a.forEach((input) => {
+        const result: { price: number; name: string }[] = []
+
+        inputs.forEach((input) => {
             if (input.checked) {
-                result.push({ price: +input.value, name: input.name })
+                const item = { price: +input.value, name: input.name }
+                result.push(item)
             }
         })
 
         dispatch(configuratorActions.setSocialNetwork(result))
     }
+
+    useEffect(() => {
+        const result: { price: number; name: string }[] = []
+
+        socialNetwork?.forEach((item) => {
+            if (!item.checked) return
+            result.push({ price: +item.price, name: item.name })
+        })
+
+        dispatch(configuratorActions.setSocialNetwork(result))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [socialNetwork])
 
     return (
         <form
@@ -45,17 +51,20 @@ export const SocialNetwork: FC = () => {
             onChange={onChange}
             className={s.SocialNetwork}
         >
-            {data?.socialNetwork.map((props, i) => {
-                const Icon = Icons[i]
+            {socialNetwork?.map((props) => {
+                const { iconNotChecked, checked, icon, name, price } = props
+
                 return (
                     <Radio
                         key={v4()}
-                        icon={<Icon />}
-                        name={props.name}
-                        value={props.price}
+                        iconNotChecked={iconNotChecked}
+                        srcIcon={icon}
+                        checked={checked || false}
+                        name={name}
+                        value={price}
                     />
                 )
             })}
         </form>
     )
-}
+})
